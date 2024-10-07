@@ -29,12 +29,12 @@ composer require jms/serializer
 ```
 ## Autenticación JWT
 
-### Instalar el Bundle JWT
+## Instalar el Bundle JWT
 
 ```
 composer require lexik/jwt-authentication-bundle
 ```
-### Generar las Claves JWT
+## Generar las Claves JWT
 
 ```
 # Crear directorio de claves
@@ -96,3 +96,40 @@ security:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 ```
+
+### Refresh Tokens
+
+## 1.Instalar el Bundle de Refresh Tokens
+```
+composer require gesdinet/jwt-refresh-token-bundle
+```
+
+## 2. Registrar el Bundle
+```
+Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle::class => ['all' => true],
+```
+
+## 3. Configurar el Bundle de Refresh Tokens
+```
+gesdinet_jwt_refresh_token:
+    ttl: 2592000          # Tiempo de vida del refresh token en segundos (30 días en este ejemplo)
+    ttl_update: true      # Si el refresh token debería actualizarse al momento de su uso
+    user_provider: app_user_provider  # El proveedor de usuarios que estás usando en tu configuración
+    refresh_token_entity: App\Entity\RefreshToken # Entidad que manejará los tokens de refresco
+```
+
+## 4. Crear la Entidad RefreshToken
+
+```
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken as BaseRefreshToken;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'refresh_tokens')]
+class RefreshToken extends BaseRefreshToken
+{
+}
+```
+ 
