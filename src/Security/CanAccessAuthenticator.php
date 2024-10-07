@@ -3,6 +3,8 @@
 
 namespace App\Security;
 
+use App\Exception\AccessDeniedException;
+use App\Exception\CustomAuthenticationException;
 use App\Exception\ValidationErrorException;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationFailureHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
@@ -53,7 +55,7 @@ class CanAccessAuthenticator extends AbstractAuthenticator
         $data = json_decode($request->getContent(), true);
 
         if (!$data || !isset($data['username']) || !isset($data['password'])) {
-            throw new AuthenticationException('Datos de autenticación inválidos.');
+            throw new CustomAuthenticationException('Datos de autenticación inválidos.');
         }
 
         $username = $data['username'];
@@ -65,20 +67,18 @@ class CanAccessAuthenticator extends AbstractAuthenticator
                 // Cargar el usuario desde el proveedor de usuarios
                 $user = $this->userProvider->loadUserByIdentifier($username);
 
+
                 if (!$user) {
-                    throw new UserNotFoundException();
+                    throw new UserNotFoundException('Usuario no encontrado.');
                 }
                 if (!$this->passwordHasher->isPasswordValid($user, $password)) {
-                    throw new AuthenticationException('El usuario o la contraseña no son validos.');
+                    throw new CustomAuthenticationException('El usuario o la contraseña no son validos.');
                 }
 
-                // if ($user->isBloqued()) {
-                //     throw new ValidationErrorException('Tu cuenta ha sido bloqueada.');
-                // }
+                if ($user->isBloqued()) {
+                    throw new CustomAuthenticationException('Tu cuenta ha sido bloqueada.');
+                }
 
-                // if (FILTER_VAR($user->isValidated(), FILTER_VALIDATE_BOOLEAN) == false) {
-                //     throw new ValidationErrorException('Debes validar tu cuenta para poder acceder.');
-                // }
 
                 return $user;
             })
@@ -101,9 +101,9 @@ class CanAccessAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         //comprobar que el usuario está activo
-        // if ($token->getUser()->isBloqued()) {
-        //     return new JsonResponse(['status' => 403, 'message' => 'No tienes permisos para acceder a este recurso. Por favor, contacta con el administrador si crees que esto es un error.'], 403);
-        // }
+        if ($token->getUser()->isBloqued()) {
+            return new JsonResponse(['status' => 403, 'message' => 'No tienes permisos para acceder a este recurso. Por favor, contacta con el administrador si crees que esto es un error.'], 403);
+        }
         return $this->successHandler->onAuthenticationSuccess($request, $token);
     }
 

@@ -1,36 +1,45 @@
 security:
     password_hashers:
-        Symfony\Component\Security\Core\User\UserInterface:
-            algorithm: auto
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
 
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email  # o username, dependiendo de tu campo de identificación
+                property: username  # o username, dependiendo de tu campo de identificación
 
     firewalls:
         login:
-            pattern:  ^/api/login
+            pattern:  ^/login/user
             stateless: true
             json_login:
-                check_path: /api/login
-                username_path: email
+                check_path: /login/user
+                username_path: username
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            custom_authenticators:
+                - App\Security\CanAccessAuthenticator
 
         api:
-            pattern:   ^/api
+            pattern: ^/api
             stateless: true
-            provider:  app_user_provider
-            jwt: ~     # Usa JWT para autenticar
-        
-        refresh_token:
-            pattern:   ^/api/token/refresh
-            stateless: true
-            refresh_jwt: ~
+            jwt: ~
+            access_denied_handler: App\Security\AccessDeniedHandler
 
     access_control:
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+when@test:
+  security:
+    password_hashers:
+      # By default, password hashers are resource intensive and take time. This is
+      # important to generate secure password hashes. In tests however, secure hashes
+      # are not important, waste resources and increase test times. The following
+      # reduces the work factor to the lowest possible values.
+      Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+        algorithm: auto
+        cost: 4 # Lowest possible value for bcrypt
+        time_cost: 3 # Lowest possible value for argon
+        memory_cost: 10 # Lowest possible value for argon
