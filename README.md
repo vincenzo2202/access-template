@@ -132,4 +132,31 @@ class RefreshToken extends BaseRefreshToken
 {
 }
 ```
+
+### Implementar form-data para cargar imagenes
+
+## 1. Ejecuta el comando 
+```
+composer require symfony/mime
+```
+
+El componente symfony/mime se utiliza para trabajar con tipos MIME en Symfony. Proporciona herramientas para detectar y manejar tipos de contenido de archivos, lo que es útil cuando estás subiendo archivos en tu aplicación, como imágenes, documentos, etc.
+
+Se debe importar en el controlador donde se vaya a usar.
+
+## 2. Crea el Image Utilities
+
+## 3. Controlador 
+```
+   // uso el imageUtilities para subir la imagen
+        $imageFile = $request->files->get('profile'); // Asegúrate de que el campo en el formulario sea 'profile'
+
+        if ($imageFile) {
+            // Llama al método uploadImage del servicio ImageUtilities
+            $imagePath = $imageUtilities->uploadImage($imageFile);
+            $user->setProfile($imagePath); // Suponiendo que setProfile espera una ruta o URL
+        }
+```
+
+
  
