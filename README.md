@@ -99,17 +99,17 @@ security:
 
 ### Refresh Tokens
 
-## 1.Instalar el Bundle de Refresh Tokens
+1.Instalar el Bundle de Refresh Tokens
 ```
 composer require gesdinet/jwt-refresh-token-bundle
 ```
 
-## 2. Registrar el Bundle
+2. Registrar el Bundle
 ```
 Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle::class => ['all' => true],
 ```
 
-## 3. Configurar el Bundle de Refresh Tokens
+3. Configurar el Bundle de Refresh Tokens
 ```
 gesdinet_jwt_refresh_token:
     ttl: 2592000          # Tiempo de vida del refresh token en segundos (30 días en este ejemplo)
@@ -118,7 +118,7 @@ gesdinet_jwt_refresh_token:
     refresh_token_entity: App\Entity\RefreshToken # Entidad que manejará los tokens de refresco
 ```
 
-## 4. Crear la Entidad RefreshToken
+4. Crear la Entidad RefreshToken
 
 ```
 namespace App\Entity;
@@ -135,7 +135,7 @@ class RefreshToken extends BaseRefreshToken
 
 ### Implementar form-data para cargar imagenes
 
-## 1. Ejecuta el comando 
+1. Ejecuta el comando 
 ```
 composer require symfony/mime
 ```
@@ -144,9 +144,9 @@ El componente symfony/mime se utiliza para trabajar con tipos MIME en Symfony. P
 
 Se debe importar en el controlador donde se vaya a usar.
 
-## 2. Crea el Image Utilities
+2. Crea el Image Utilities
 
-## 3. Controlador 
+3. Controlador 
 ```
    // uso el imageUtilities para subir la imagen
         $imageFile = $request->files->get('profile'); // Asegúrate de que el campo en el formulario sea 'profile'
