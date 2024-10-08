@@ -97,7 +97,7 @@ security:
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 ```
 
-### Refresh Tokens
+## Refresh Tokens
 
 1.Instalar el Bundle de Refresh Tokens
 ```
@@ -133,7 +133,7 @@ class RefreshToken extends BaseRefreshToken
 }
 ```
 
-### Implementar form-data para cargar imagenes
+## Implementar form-data para cargar imagenes
 
 1. Ejecuta el comando 
 ```
