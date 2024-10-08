@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profile = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,5 +144,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // No es necesario cuando se usa el algoritmo "bcrypt" en security.yaml
         return null;
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): static
+    {
+        $this->profile = $profile;
+
+        return $this;
     }
 }
