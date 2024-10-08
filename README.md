@@ -12,14 +12,14 @@ Este proyecto está basado en Symfony y proporciona un ejemplo de autenticación
 
 ## Instalación
 
-### 1. Crear el Proyecto Symfony
+1. Crear el Proyecto Symfony
 
 Para crear un nuevo proyecto Symfony, ejecuta:
 
 ```bash
 symfony new my_project_name
 ``` 
-###  Instalar Dependencias
+2. Instalar Dependencias
 
 ```bash
 composer require doctrine/orm
@@ -29,12 +29,12 @@ composer require jms/serializer
 ```
 ## Autenticación JWT
 
-## Instalar el Bundle JWT
+1. Instalar el Bundle JWT
 
 ```
 composer require lexik/jwt-authentication-bundle
 ```
-## Generar las Claves JWT
+2. Generar las Claves JWT
 
 ```
 # Crear directorio de claves
@@ -51,7 +51,7 @@ chmod 644 config/jwt/private.pem
 chmod 644 config/jwt/public.pem
 ```
 
-## Configurar JWT en Symfony
+3. Configurar JWT en Symfony
  ```
  lexik_jwt_authentication:
     secret_key: '%kernel.project_dir%/config/jwt/private.pem'
@@ -61,7 +61,7 @@ chmod 644 config/jwt/public.pem
 
 ```
 
-## Configurar el Sistema de Seguridad
+4. Configurar el Sistema de Seguridad
 
 ```
 security:
