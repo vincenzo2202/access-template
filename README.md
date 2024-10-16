@@ -51,6 +51,25 @@ chmod 644 config/jwt/private.pem
 chmod 644 config/jwt/public.pem
 ```
 
+o tambien solo ejecutando ya genera las claves
+```
+php bin/console lexik:jwt:generate-keypair
+
+```
+
+recuerda que el .env debes apuntar a las claves y crear una JWT_PASSPHRASE.
+
+Así deber lucir tu .env
+
+```
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE='passphrase'
+###< lexik/jwt-authentication-bundle ###
+
+```
+
 3. Configurar JWT en Symfony
  ```
  lexik_jwt_authentication:
