@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "index.php",
+            "use": "@vercel/php",
+            "config": {
+                "phpVersion": "8.2"
+            }
+        }
+    ],
+    "env": {
+        "COMPOSER_ALLOW_SUPERUSER": "1"
+    },
+    "build": {
+        "env": {
+            "COMPOSER_HOME": "/tmp/composer"
+        },
+        "commands": [
+            "curl -sS https://getcomposer.org/installer | php", // Instalar Composer
+            "php composer.phar install --no-dev --optimize-autoloader", // Instalar dependencias PHP
+            "npm install", // Instalar dependencias JS (si usas Symfony Encore u otros)
+            "npm run build" // Ejecutar la compilación de assets de frontend (si aplica)
+        ]
+    }
+}
