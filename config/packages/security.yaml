@@ -28,7 +28,7 @@ security:
             access_denied_handler: App\Security\AccessDeniedHandler
 
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/login/user, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
